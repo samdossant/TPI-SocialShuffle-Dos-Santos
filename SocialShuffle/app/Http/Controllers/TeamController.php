@@ -12,7 +12,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return view('teams.index');
+        return view('teams.index', ['teams' => Team::latest()->withCount('members')->get()]);
     }
 
     /**
@@ -36,7 +36,11 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
+        return view('teams.show', 
+        [
+            'team' => $team,
+            'members' => $team->members()->get(),
+        ]);
     }
 
     /**

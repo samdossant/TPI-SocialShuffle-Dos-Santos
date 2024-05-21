@@ -16,11 +16,11 @@ return new class extends Migration
 
             // Columns
             $table->string('name');
-            $table->integer('nbActivities');
-            $table->integer('nbMemberPerGroup');
+            $table->integer('nbActivities')->nullable();
+            $table->integer('nbMemberPerGroup')->nullable();
 
             // Foreign key
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
