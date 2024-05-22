@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h2 class="text-2xl font-semibold">Your Events</h2>
+    <h2 class="text-2xl font-semibold">Vos équipes</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 ">
 
