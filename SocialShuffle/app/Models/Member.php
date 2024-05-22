@@ -11,6 +11,13 @@ class Member extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'email',
+        'phoneNumber',
+    ];
+
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);

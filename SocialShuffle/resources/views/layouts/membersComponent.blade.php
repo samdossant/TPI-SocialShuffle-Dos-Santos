@@ -1,9 +1,9 @@
 <p class="text-lg mb-3"><span class="font-bold">{{ $members->count() }}</span> {{ Str::plural('membre', $members->count()) }}</p>
-<div class="overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-96 p-4 mb-5 shadow border rounded-lg">
+<div class="overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 mb-5 h-96 shadow border rounded-lg">
 
     @forelse ($members as $member)
         {{-- card --}}
-        <div class=" flex bg-blue-200 rounded-lg shadow-md ">
+        <div class=" flex h- bg-blue-200 rounded-lg shadow-md ">
             <div class=" bg-blue-200 rounded-lg">
                 <div class=" row-span-2 flex-1 p-4">
                     <h3 class="font-semibold text-lg">{{ $member->firstname }} {{ $member->lastname }}</h3>

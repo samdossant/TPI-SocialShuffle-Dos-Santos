@@ -20,7 +20,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        return view('teams.forms.nameForm');
     }
 
     /**
@@ -28,7 +28,23 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(isset($request->name)){
+            $teamName = $request->validate([
+                'name' => 'required|string',
+            ]);
+
+            $team = Team::create($teamName);
+
+            session([
+                'currentTeam' => $team,
+            ]);
+
+            return view('members.createMembers', 
+            [
+                'team' => $team,
+                'members' => $team->members()->get(),
+            ]);
+        }
     }
 
     /**

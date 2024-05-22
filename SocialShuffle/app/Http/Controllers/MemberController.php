@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -20,15 +21,28 @@ class MemberController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Team $team)
     {
-        //
+        $data = $request->validate([
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
+            'email' => 'required|email',
+            'phoneNumber' => 'required|string',
+        ]);
+
+        $team->members()->create($data);
+        
+        return view('members.createMembers', 
+        [
+            'team' => $team,
+            'members' => $team->members()->get(),
+        ]);
     }
 
     /**

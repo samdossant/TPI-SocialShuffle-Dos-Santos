@@ -12,6 +12,11 @@ class Team extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+
+    ];
+
     public function groups():HasMany
     {
         return $this->hasMany(Group::class);
