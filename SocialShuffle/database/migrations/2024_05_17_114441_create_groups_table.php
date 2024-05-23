@@ -18,8 +18,7 @@ return new class extends Migration
             $table->integer('generation');
 
             // Foreign Key
-            $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreignId('team_id')->constrained();
 
             $table->timestamps();
         });

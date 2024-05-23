@@ -18,7 +18,7 @@
         <title>@yield('title')</title>
 
         <script>
-            // Ensures the code runs only after the entire HTML document has been loaded
+            // Ensures the code runs only after the entire HTML document have been loaded
             document.addEventListener('DOMContentLoaded', () => {
 
                 // Selecting the elements by their IDs
@@ -28,8 +28,8 @@
                 const userMenu          = document.getElementById('user-menu');
                 
                 // Event listener for when moibleMenuButtoon is clicked
-                mobileMenuButton.addEventListener('click', () => {
-                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.addEventListener('click',() => {
+                    const isExpanded = mobileMenuButton.getAttribute('aria-expanded')=== 'true';
                     mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
                     mobileMenu.classList.toggle('hidden');
 
@@ -97,7 +97,7 @@
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                             <a href="{{ route('team.index') }}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Liste des équipes</a>
                             <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">À propos</a>
-                            <a href="{{ route('team.create') }}" class=" bg-indigo-500 text-white hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">+ Nouvelle équipe</a>
+                            <a href="{{ route('team.create') }}" class=" bg-indigo-500 text-white hover:bg-indigo-400 hover:text-white rounded-md px-3 py-2 text-sm font-medium">+ Nouvelle équipe</a>
                         </div>
                     </div>
                 </div>

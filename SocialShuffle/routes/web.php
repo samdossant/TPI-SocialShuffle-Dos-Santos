@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 // resources
 Route::resource('team', TeamController::class);
-Route::resource('team.member', MemberController::class);
+Route::resource('team.members', MemberController::class);
 Route::resource('group', GroupController::class);
 
 // Authentication

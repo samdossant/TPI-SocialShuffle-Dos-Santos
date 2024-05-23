@@ -15,11 +15,8 @@ return new class extends Migration
             // This is the pivot table that links the members and the groups together.
 
             // Foreign Keys
-            $table->unsignedBigInteger('member_id');
-            $table->unsignedBigInteger('group_id');
-
-            $table->foreign('member_id')->references('id')->on('members');
-            $table->foreign('group_id') ->references('id')->on('groups');
+            $table->foreignId('member_id')->constrained();
+            $table->foreignID('group_id')->constrained();
         });
     }
 

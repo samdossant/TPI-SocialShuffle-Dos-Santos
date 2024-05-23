@@ -1,0 +1,1 @@
+@include('teams.forms.nameForm', ['team' => $team])

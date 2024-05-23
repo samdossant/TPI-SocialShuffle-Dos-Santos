@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MemberRequest;
 use App\Models\Member;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -19,26 +20,38 @@ class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Team $team)
     {
-        
+        // Get the Members
+        $members = Member::where('team_id', $team->id)->orderBy('lastname')->get();
+
+        // Only send the members if they exist in the team
+        if(!$members->isEmpty())
+        {
+            return view('members.createMembers', [
+                'team' => $team,
+                'members' => $members,
+            ]);
+        }
+
+        return view('members.createMembers', [
+            'team' => $team,
+        ]);        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Team $team)
+    public function store(MemberRequest $request, Team $team)
     {
-        $data = $request->validate([
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'email' => 'required|email',
-            'phoneNumber' => 'required|string',
-        ]);
+        // Validate the request containing the new member informations
+        $data = $request->validated();
 
+        // Create the member
         $team->members()->create($data);
         
-        return view('members.createMembers', 
+        // Redirect to the form
+        return redirect()->route('team.members.create', 
         [
             'team' => $team,
             'members' => $team->members()->get(),
@@ -48,32 +61,44 @@ class MemberController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Member $member)
+    public function show(Team $team, Member $member)
     {
-        //
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Member $member)
+    public function edit(Team $team, Member $member)
     {
-        //
+        return view('members.editMembers', [
+            'team' => $team,
+            'member' => $member,
+            'members' => $team->members()->get(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Member $member)
+    public function update(MemberRequest $request, Team $team, Member $member)
     {
-        //
+        $validatedMember = $request->validated();
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Member $member)
+    public function destroy(Team $team, Member $member)
     {
-        //
+        // dd($member);
+        $member->delete();
+
+        return redirect()->route('team.show', 
+        [
+            'team' => $team,
+        ]);
     }
 }

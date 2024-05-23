@@ -21,8 +21,7 @@ return new class extends Migration
             $table->string('phoneNumber');
 
             // Foreign Key
-            $table->unsignedBigInteger('team_id');
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

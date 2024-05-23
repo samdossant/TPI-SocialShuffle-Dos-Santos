@@ -19,9 +19,8 @@ return new class extends Migration
             $table->integer('nbActivities')->nullable();
             $table->integer('nbMemberPerGroup')->nullable();
 
-            // Foreign key
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+            // Foreign key (nullable must be called before constrained)
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

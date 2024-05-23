@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TeamRequest;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return view('teams.index', ['teams' => Team::latest()->withCount('members')->get()]);
+        return view('teams.index', 
+        [
+            'teams' => Team::latest()->withCount('members')->get(),
+        ]);
     }
 
     /**
@@ -26,25 +30,17 @@ class TeamController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TeamRequest $request)
     {
-        if(isset($request->name)){
-            $teamName = $request->validate([
-                'name' => 'required|string',
-            ]);
+        $validatedName = $request->validated();
 
-            $team = Team::create($teamName);
+        $team = $validatedName->create();
 
-            session([
-                'currentTeam' => $team,
-            ]);
-
-            return view('members.createMembers', 
-            [
-                'team' => $team,
-                'members' => $team->members()->get(),
-            ]);
-        }
+        return redirect()->route('team.members.create', 
+        [
+            'team' => $team,
+        ]);
+        
     }
 
     /**
@@ -64,15 +60,19 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        //
+        return view('teams.forms.editName', ['team' => $team]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Team $team)
+    public function update(TeamRequest $request, Team $team)
     {
-        //
+        $validatedName = $request->validated();
+
+        $team->update($validatedName);
+
+        return redirect()->route('team.show', ['team' => $team]);
     }
 
     /**
@@ -80,6 +80,9 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        // dd($team);
+        $team->delete();
+
+        return redirect()->route('team.index');
     }
 }
