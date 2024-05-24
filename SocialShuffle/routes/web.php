@@ -17,11 +17,14 @@ Route::resource('team.members', MemberController::class);
 Route::resource('group', GroupController::class);
 
 // Authentication
-Route::get('login', [AuthController::class, 'login'])       
+Route::get('login', [AuthController::class, 'login'])
     ->name('auth.login');
 
-Route::get('login', [AuthController::class, 'applyLogin'])  
+Route::post('login', [AuthController::class, 'applyLogin'])  
     ->name('auth.applyLogin');
+
+Route::get('logout', [AuthController::class, 'logout'])
+    ->name('auth.logout');
 
 // About page
 Route::get('about', function(){

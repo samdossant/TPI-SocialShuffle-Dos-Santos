@@ -85,7 +85,9 @@ class MemberController extends Controller
     {
         $validatedMember = $request->validated();
 
+        $member->update($validatedMember);
 
+        return redirect()->route('team.show', ['team' => $team]);
     }
 
     /**
@@ -93,12 +95,9 @@ class MemberController extends Controller
      */
     public function destroy(Team $team, Member $member)
     {
-        // dd($member);
+        // Delete the member
         $member->delete();
 
-        return redirect()->route('team.show', 
-        [
-            'team' => $team,
-        ]);
+        return redirect()->route('team.show', ['team' => $team]);
     }
 }

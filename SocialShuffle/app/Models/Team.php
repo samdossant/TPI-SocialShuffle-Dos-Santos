@@ -14,7 +14,7 @@ class Team extends Model
 
     protected $fillable = [
         'name',
-
+        'user_id',
     ];
 
     public function groups():HasMany

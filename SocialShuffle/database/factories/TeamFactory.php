@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,9 +17,11 @@ class TeamFactory extends Factory
      */
     public function definition(): array
     {
+        $users = User::pluck('id')->toArray();
+
         return [
             'name' => fake()->word,
-
+            'user_id' => fake()->randomElement($users),
         ];
     }
 }

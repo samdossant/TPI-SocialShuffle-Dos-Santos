@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TeamRequest;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use App\Http\Requests\TeamRequest;
+use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
@@ -13,9 +14,19 @@ class TeamController extends Controller
      */
     public function index()
     {
+        if(Auth::check())
+        {
+            return view('teams.index',
+            [
+                'userTeams' => Team::where('user_id', Auth::user()->id)->latest()->withCount('members')->get(),
+                'allTeams' => Team::latest()->withCount('members')->get(),
+            ]);
+            
+        }
+
         return view('teams.index', 
         [
-            'teams' => Team::latest()->withCount('members')->get(),
+            'allTeams' => Team::latest()->withCount('members')->get(),
         ]);
     }
 
@@ -33,8 +44,11 @@ class TeamController extends Controller
     public function store(TeamRequest $request)
     {
         $validatedName = $request->validated();
+        $validatedName['user_id'] = Auth::user()->id;
 
-        $team = $validatedName->create();
+        // dd($validatedName);
+
+        $team = Team::create($validatedName);
 
         return redirect()->route('team.members.create', 
         [
