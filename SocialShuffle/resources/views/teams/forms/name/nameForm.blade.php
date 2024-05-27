@@ -24,10 +24,6 @@
                 @enderror
             </div>
 
-            @isset($team)
-                
-            @endisset
-
             @if (isset($team))
                 <div class=" self-end mb-5">
                     <input type="submit" value="Modifier" class="text-white bg-indigo-500 px-3 py-1 rounded">

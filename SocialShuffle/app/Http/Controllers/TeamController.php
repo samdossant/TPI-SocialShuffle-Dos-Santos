@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\CreateGroupsRequest;
 
 class TeamController extends Controller
 {
@@ -35,7 +37,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('teams.forms.nameForm');
+        return view('teams.forms.name.nameForm');
     }
 
     /**
@@ -74,7 +76,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        return view('teams.forms.editName', ['team' => $team]);
+        return view('teams.forms.name.editName', ['team' => $team]);
     }
 
     /**
@@ -99,4 +101,23 @@ class TeamController extends Controller
 
         return redirect()->route('team.index');
     }
+
+
+    // Groups management
+
+    public function groupForm(Team $team){
+        return view('teams.forms.groups.createGroups', ['team' => $team]);
+    }
+
+    public function generateGroups(CreateGroupsRequest $request, Team $team)
+    {
+        $data = $request->validated();
+    
+        $members = $team->members;
+        $totalGenerations = $data['nbActivities'];  // Nombre de générations d'activités
+        $membersPerGroup = $data['nbMemberPerGroup'];  // Nombre de membres par groupe
+        $totalMembers = count($members);
+        
+
+
 }

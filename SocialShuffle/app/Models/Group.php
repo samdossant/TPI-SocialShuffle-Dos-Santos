@@ -13,6 +13,11 @@ class Group extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'generation',
+        'team_id',
+    ];
+
     public function members(): HasMany
     {
         return $this->hasMany(Member::class);
