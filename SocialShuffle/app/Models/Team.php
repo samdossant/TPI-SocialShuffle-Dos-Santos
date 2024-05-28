@@ -12,12 +12,12 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'nbActivities',
-        'nbMemberPerGroup',
-        'user_id',
-    ];
+protected $fillable = [
+    'name',
+    'nbActivities',
+    'nbMemberPerGroup',
+    'user_id',
+];
 
     public function groups():HasMany
     {

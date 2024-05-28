@@ -10,7 +10,7 @@ Route::get('/', function () {
     return redirect()->route('team.index');
 });
 
-// Team (Additional routes to a resource controller must be defined before calling the resource route)
+// Team algorithm (Additional routes to a resource controller must be defined before calling the resource route)
 
 Route::get('groupForm/{team}', [TeamController::class, 'groupForm'])
     ->name('team.groupForm');

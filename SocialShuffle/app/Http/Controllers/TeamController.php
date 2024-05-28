@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use App\Models\Group;
-use Illuminate\Http\Request;
 use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateGroupsRequest;
@@ -17,14 +16,15 @@ class TeamController extends Controller
      */
     public function index()
     {
+        // Check that user is authenticated to display their teams
         if(Auth::check())
         {
             return view('teams.index',
             [
+                // Get only the teams that belong to the current user.
                 'userTeams' => Team::where('user_id', Auth::user()->id)->latest()->withCount('members')->get(),
                 'allTeams' => Team::latest()->withCount('members')->get(),
             ]);
-            
         }
 
         return view('teams.index', 
@@ -38,36 +38,40 @@ class TeamController extends Controller
      */
     public function create()
     {
+        // Check wether user is authenticated. If not throw error 401 (Unauthorized) 
+        if(!Auth::check()){
+            return abort(401);
+        }
         return view('teams.forms.name.nameForm');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(TeamRequest $request)
-    {
-        $validatedName = $request->validated();
-        $validatedName['user_id'] = Auth::user()->id;
+public function store(TeamRequest $request)
+{
+    // Validate request
+    $validatedName = $request->validated();
 
-        // dd($validatedName);
+    // Add the current authentified user to the validated data array.
+    $validatedName['user_id'] = Auth::user()->id;
 
-        $team = Team::create($validatedName);
+    // Create a new team with mass assignement
+    $team = Team::create($validatedName);
 
-        return redirect()->route('team.members.create', 
-        [
-            'team' => $team,
-        ]);
-        
-    }
+    return redirect()->route('team.members.create', 
+    [
+        'team' => $team,
+    ]);
+}
 
     /**
      * Display the specified resource.
      */
     public function show(Team $team)
     {
+        // Checks that groups exist in the team
         if($team->groups()->exists()){
-
-            // dd($groups);
 
             return view('teams.show', 
             [
@@ -99,6 +103,7 @@ class TeamController extends Controller
     {
         $validatedName = $request->validated();
 
+        // Update with mass assignement
         $team->update($validatedName);
 
         return redirect()->route('team.show', ['team' => $team]);
@@ -109,14 +114,15 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        // dd($team);
         $team->delete();
-
         return redirect()->route('team.index');
     }
 
-    // Groups management
+    //---- Groups management ----
 
+    /**
+     * Show the form to enter the data related to the group generation
+     */
     public function groupForm(Team $team){
         return view('teams.forms.groups.createGroups', ['team' => $team]);
     }
@@ -124,7 +130,6 @@ class TeamController extends Controller
     public function generateGroups(CreateGroupsRequest $request, Team $team)
     {
         $data = $request->validated();
-
         
         $members = $team->members;
         $totalGenerations = $data['nbActivities'];  // Number of generations
@@ -176,10 +181,7 @@ class TeamController extends Controller
         // Create groups in database and associate the members
         foreach($previousAssignments as $generationIndex => $generationGroup){
             
-            $i = 0;
-            
-            // dd($generationGroup);
-            
+            // $i = 0;
             
             foreach($generationGroup as $groupMembers){
                 $group = Group::create([

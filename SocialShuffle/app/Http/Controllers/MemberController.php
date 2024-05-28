@@ -44,7 +44,7 @@ class MemberController extends Controller
      */
     public function store(MemberRequest $request, Team $team)
     {
-        // Validate the request containing the new member informations
+        // Validate the request containing the new member data
         $data = $request->validated();
 
         // Create the member
