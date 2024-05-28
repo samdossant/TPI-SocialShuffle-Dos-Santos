@@ -22,13 +22,44 @@
             </form>
         @endif
     </div>
-        
+
+    @if(isset($groups))
+        @php
+            $generation = -1            
+        @endphp
+
+        @foreach ($groups as $group)
+            @if ($generation != $group->generation)
+                {{ $group->generation }}
+            @endif
+            @php
+                $generation = $group->generation;
+            @endphp
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 bg-blue-200 mb-4">
+
+                {{-- <p>{{ dd($group->members) }}</p> --}}
+                {{-- <div class="flex justify-start">{{ $group->generation }}</div>    --}}
+
+                <div >
+                    <p>{{ $generation + 1}}</p>
+                    @foreach ($group->members as $member)
+                            <p>{{ $member->firstname }} {{ $member->lastname }}</p>                        
+                    @endforeach
+
+                </div>
+
+                
+            </div>
+        @endforeach
+    
+    @endif    
         
     @if(Auth::user()->id == $team->user_id || Auth::user()->admin)
         <a href="{{ route('team.members.create', ['team' => $team, 'members' => $members]) }}" class="text-white bg-indigo-500 px-3 py-1 rounded hover:bg-indigo-400">Ajouter des membres</a>
     @endif
+
     @include('layouts.membersComponent')
-    
+
     <p class="text-lg mb-3"><span class="font-bold">5</span> personnes par groupe</p>
 
 @endsection

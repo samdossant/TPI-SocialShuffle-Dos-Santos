@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateGroupsRequest;
+use App\Models\Member;
 
 class TeamController extends Controller
 {
@@ -64,6 +65,18 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
+        if($team->groups()->exists()){
+
+            // dd($groups);
+
+            return view('teams.show', 
+            [
+                'team' => $team,
+                'groups' => $team->groups()->orderBy('generation')->get(),
+                'members' => $team->members()->get(),
+            ]);
+        }
+
         return view('teams.show', 
         [
             'team' => $team,
@@ -102,7 +115,6 @@ class TeamController extends Controller
         return redirect()->route('team.index');
     }
 
-
     // Groups management
 
     public function groupForm(Team $team){
@@ -112,12 +124,84 @@ class TeamController extends Controller
     public function generateGroups(CreateGroupsRequest $request, Team $team)
     {
         $data = $request->validated();
-    
-        $members = $team->members;
-        $totalGenerations = $data['nbActivities'];  // Nombre de générations d'activités
-        $membersPerGroup = $data['nbMemberPerGroup'];  // Nombre de membres par groupe
-        $totalMembers = count($members);
+
         
+        $members = $team->members;
+        $totalGenerations = $data['nbActivities'];  // Number of generations
+        $membersPerGroup = $data['nbMemberPerGroup'];  // Size of the group (numbre of members)
+        $totalMembers = count($members);
+        $notComplete = false;
+        
+        $membersId = $members->pluck('id')->toArray();
+        
+        // Contains all the generations
+        $previousAssignments = [];
+        
+        // Cycle through each generation
+        for($i = 0; $i < $totalGenerations; $i++)
+        {
+            $group = []; // Contains one group at a time
+            $generationGroups = []; // Contains the groups of one gneration
+            
+            // Shuffle the members in a random order
+            shuffle($membersId);
+            
+            // Cycle through each member
+            foreach($membersId as $member){
+                
+                // Add the member to the group
+                $group[] = $member;
+                
+                // Check if the number of stored members isn't higher than the defined group size
+                if(count($group) >= $membersPerGroup){
+                    
+                    // Add the created group to the generation
+                    $generationGroups[] = $group;
+                    
+                    // Reset the array
+                    $group = [];
+                }
+            }
+            
+            // If the data doesn't allow to store the inputed number of members for the last groups, then store the uncomplete group in the generation.
+            if($totalMembers % $membersPerGroup != 0){
+                $generationGroups[] = $group;
+                $notComplete = true;
+            }
+            
+            // Store the generation
+            $previousAssignments[] = $generationGroups;
+        }
+        
+        // Create groups in database and associate the members
+        foreach($previousAssignments as $generationIndex => $generationGroup){
+            
+            $i = 0;
+            
+            // dd($generationGroup);
+            
+            
+            foreach($generationGroup as $groupMembers){
+                $group = Group::create([
+                    'generation' => $generationIndex,
+                    'team_id' => $team->id,
+                ]);
+                foreach($groupMembers as $groupMember){
+                    
+                    // Find the member with its ID
+                    $specificMember = Member::find($groupMember);
+                    
+                    // Associate the member to its group
+                    $specificMember->groups()->attach($group);
+                }
+            }
+        }
 
-
+        $team->update([
+            'nbActivities' => $totalGenerations,
+            'nbMemberPerGroup' => $membersPerGroup,
+        ]);
+        
+        return response()->json($previousAssignments);
+    }    
 }

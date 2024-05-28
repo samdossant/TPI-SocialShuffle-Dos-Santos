@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Group extends Model
 {
@@ -18,9 +19,9 @@ class Group extends Model
         'team_id',
     ];
 
-    public function members(): HasMany
+    public function members(): BelongsToMany
     {
-        return $this->hasMany(Member::class);
+        return $this->belongsToMany(Member::class);
     }
 
     public function team():BelongsTo

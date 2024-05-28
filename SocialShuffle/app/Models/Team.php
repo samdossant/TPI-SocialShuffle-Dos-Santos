@@ -14,6 +14,8 @@ class Team extends Model
 
     protected $fillable = [
         'name',
+        'nbActivities',
+        'nbMemberPerGroup',
         'user_id',
     ];
 
