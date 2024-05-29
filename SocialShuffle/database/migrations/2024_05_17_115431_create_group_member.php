@@ -15,8 +15,8 @@ return new class extends Migration
             // This is the pivot table that links the members and the groups together.
 
             // Foreign Keys
-            $table->foreignId('member_id')->constrained();
-            $table->foreignID('group_id')->constrained();
+            $table->foreignId('member_id')->constrained()->cascadeOnDelete();
+            $table->foreignID('group_id')->constrained()->cascadeOnDelete();
         });
     }
 

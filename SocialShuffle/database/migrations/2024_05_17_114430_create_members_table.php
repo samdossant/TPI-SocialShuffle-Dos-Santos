@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('email');
-            $table->string('phoneNumber');
+            $table->string('phone_number');
 
             // Foreign Key
-            $table->foreignId('team_id')->constrained()->onDelete('cascade');
+            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });

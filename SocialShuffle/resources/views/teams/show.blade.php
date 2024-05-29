@@ -27,35 +27,42 @@
 
     @if(isset($groups))
         @php
-            $generation = -1            
+            $currentGeneration = null; 
         @endphp
 
         @foreach ($groups as $group)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4  mb-4">
-                @if ($generation != $group->generation)
-                    {{ $group->generation }}
-                @endif
+            @if ($currentGeneration !== $group->generation)
                 @php
-                    $generation = $group->generation;
+                    $groupCounter = 0;
                 @endphp
-                <div class="flex ">
-                    <div class="flex flex-col bg-blue-200 p-4">
-                        <p>{{ $generation + 1}}</p>
-                        @foreach ($group->members as $member)
-                                <p>{{ $member->firstname }} {{ $member->lastname }}</p>                        
-                        @endforeach
-                    </div>
-
-                </div>
-
-                
+                @if ($currentGeneration !== null)
+                    </div> {{-- Close previous div --}}
+                @endif
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold my-4">Generation {{ $group->generation + 1 }}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            @endif
+            @php
+                $currentGeneration = $group->generation;
+            @endphp
+            <div class="flex flex-col bg-blue-200 p-4 rounded-xl">
+                @php
+                    $memberCounter = 0;
+                @endphp
+                <p class="font-semibold">{{ ++$groupCounter }}</p>
+                @foreach ($group->members as $member)
+                    <p class="ml-4"><span class="font-bold">-</span> <span class="font-semibold">{{ $member->lastname }}</span> {{ $member->firstname }}</p>
+                @endforeach
             </div>
         @endforeach
-    
-    @endif    
+        @if ($currentGeneration !== null)
+            </div>  {{-- Close last div --}} 
+        @endif
+    @endif
         
-    @if(Auth::user()->id == $team->user_id || Auth::user()->admin)
-        <div class="flex flex-wrap">
+    @if(Auth::check() && Auth::user()->id == $team->user_id || Auth::user()->admin)
+        <h2 class="my-5 text-4xl font-semibold">Gestion des membres</h2>
+        <div class="flex flex-wrap ">
             <a href="{{ route('team.groupForm', ['team' => $team]) }}" class="text-white bg-indigo-500 px-3 py-1 mb-2 mr-2 rounded hover:bg-indigo-400">Générer les groupes</a>
             <a href="{{ route('team.members.create', ['team' => $team, 'members' => $members]) }}" class="text-white bg-indigo-500 px-3 py-1 mb-2 rounded hover:bg-indigo-400">+Ajouter des membres</a>
         </div>

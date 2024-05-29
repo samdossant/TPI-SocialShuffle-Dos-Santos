@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Créer une équipe')
+@section('title', isset($team) ? 'Modifier l\'équipe' : 'Créer l\'équipe')
 
 @section('content')
 
-    <h2 class="text-2xl font-semibold mb-5">Créer une nouvelle équipe</h2>
+    <h2 class="text-2xl font-semibold mb-5">{{ isset($team) ? 'Modifier l\'équipe' : 'Créer l\'équipe' }}</h2>
 
     <div class="flex justify-center w-full">
 

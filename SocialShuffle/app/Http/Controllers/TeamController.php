@@ -138,7 +138,7 @@ public function store(TeamRequest $request)
 
         $members = $team->members;
         $totalGenerations = $data['nbActivities'];  // Number of generations
-        $membersPerGroup = $data['nbMemberPerGroup'];  // Size of the group (numbre of members)
+        $membersPerGroup = $data['nbMemberPerGroup'];  // Size of the group (number of members)
         $totalMembers = count($members);
 
         $notCompleteGroupeSize = null;
@@ -148,7 +148,23 @@ public function store(TeamRequest $request)
         if($membersPerGroup > $totalMembers)
         {
             return redirect()->back()->withErrors(['other' => 'La taille des groupes spécifiée est plus grande que le nombre total de membres'])
-                ->withInput($request->input);
+                ->withInput($request->input());
+        }
+
+        if($totalMembers % $membersPerGroup != 0 && !$request->has('confirm')){
+            return redirect()->back()->withInput($request->input())
+                ->with(
+                [
+                    'confirm' => true, 
+                    'notCompleteGroupeSize' => $totalMembers % $membersPerGroup,
+                ]);
+        }
+
+        foreach($members as $member){
+            if($member->groups()->exists())
+            {
+                $member->groups()->delete();
+            }
         }
         
         $membersId = $members->pluck('id')->toArray();
@@ -160,7 +176,7 @@ public function store(TeamRequest $request)
         for($i = 0; $i < $totalGenerations; $i++)
         {
             $group = []; // Contains one group at a time
-            $generationGroups = []; // Contains the groups of one gneration
+            $generationGroups = []; // Contains the groups of one generation
             
             // Shuffle the members in a random order
             shuffle($membersId);
@@ -185,8 +201,6 @@ public function store(TeamRequest $request)
             // If the data doesn't allow to store the inputed number of members for the last groups, then store the uncomplete group in the generation.
             if($totalMembers % $membersPerGroup != 0){
                 $generationGroups[] = $group;
-                $notCompleteGroupeSize = $totalMembers % $membersPerGroup;
-                $notComplete = true;
             }
             
             // Store the generation
@@ -219,6 +233,6 @@ public function store(TeamRequest $request)
             'nbMemberPerGroup' => $membersPerGroup,
         ]);
         
-        return response()->json($previousAssignments);
+        return redirect()->route('team.show', ['team' => $team]);
     }
 }

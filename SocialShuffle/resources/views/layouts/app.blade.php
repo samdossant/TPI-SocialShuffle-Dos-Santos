@@ -1,10 +1,10 @@
 {{-- 
 | ETML
-| Autheur : Samuel Dos Santos, FIN2
+| Author : Samuel Dos Santos, FIN2
 | Date : 20.05.2024
+| Description : Main layout of the website. Contains the navbar and the footer.
 |
-|
-| Template de la navbar : https://tailwindui.com/components/application-ui/navigation/navbars
+| Template of the navbar : https://tailwindui.com/components/application-ui/navigation/navbars
 |    
 --}}
 
@@ -18,7 +18,7 @@
         <title>@yield('title')</title>
 
         <script>
-            // Ensures the code runs only after the entire HTML document have been loaded
+            // Make sure that the code runs only after the entire HTML document have been loaded
             document.addEventListener('DOMContentLoaded', () => {
 
                 // Selecting the elements by their IDs
@@ -46,7 +46,7 @@
                     userMenu.classList.toggle('hidden');
                 });
 
-                // Close user menu when clicking outside
+                // Close user menu when clicked outside
                 document.addEventListener('click', (event) => {
                     if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) 
                     {
@@ -152,7 +152,6 @@
                 <div class="space-y-1 px-2 pb-3 pt-2">
                     <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
 
-                    {{-- class="{{ \Request::route()->getName() == 'team.index' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded-md px-3 py-2 text-sm font-medium" --}}
                     @auth
                         <a href="{{ route('team.create') }}" class="bg-indigo-500 text-white block rounded-md px-3 py-2 mb-6 text-base font-medium" aria-current="page">+ Nouvelle équipe</a>
                     @endauth

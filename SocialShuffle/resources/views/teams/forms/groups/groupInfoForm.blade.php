@@ -28,12 +28,25 @@
             </div>
 
             @error('other')
-                <p class="text-red-500">{{ $message }}</p>
+                <div class="mb-5 p-3 bg-red-100 border-l-4 border-red-500 rounded-md text-red-700">
+                    <p class="text-red-500">{{ $message }}</p>
+                </div>
             @enderror
-
-            <div class=" self-end mb-5">
-                <input type="submit" value="Créer les groupes" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
-            </div>
+            
+            @if (session('confirm'))
+                <div class="mb-5 p-3 bg-yellow-100 border-l-4 border-yellow-500 rounded-md text-yellow-700">
+                    <p class="text-xl font-bold">Avertissement</p>
+                    <p>Le nombre de membres indiqué ne permet pas de former des groupes complets. Voulez-vous continuer avec un groupe incomplet constitué de <span class="font-bold">{{ session('notCompleteGroupeSize') }}</span> membres ?</p>
+                </div>
+                <input type="hidden" name="confirm" value="yes">
+                <div class=" self-end mb-5">
+                    <input type="submit" value="Confirmer" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+                </div>
+            @else
+                <div class=" self-end mb-5">
+                    <input type="submit" value="Créer les groupes" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+                </div>
+            @endif
         </form>
     </div>
 @endsection

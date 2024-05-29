@@ -16,11 +16,11 @@ return new class extends Migration
 
             // Columns
             $table->string('name');
-            $table->integer('nbActivities')->nullable();
-            $table->integer('nbMemberPerGroup')->nullable();
+            $table->integer('nb_Activities')->nullable();
+            $table->integer('group_size')->nullable();
 
             // Foreign key ("nullable" must be called before constrained)
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });
