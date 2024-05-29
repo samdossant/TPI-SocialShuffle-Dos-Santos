@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('generation');
 
             // Foreign Key
-            $table->foreignId('team_id')->constrained();
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -31,18 +31,20 @@
         @endphp
 
         @foreach ($groups as $group)
-            @if ($generation != $group->generation)
-                {{ $group->generation }}
-            @endif
-            @php
-                $generation = $group->generation;
-            @endphp
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 bg-blue-200 mb-4">
-                <div >
-                    <p>{{ $generation + 1}}</p>
-                    @foreach ($group->members as $member)
-                            <p>{{ $member->firstname }} {{ $member->lastname }}</p>                        
-                    @endforeach
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4  mb-4">
+                @if ($generation != $group->generation)
+                    {{ $group->generation }}
+                @endif
+                @php
+                    $generation = $group->generation;
+                @endphp
+                <div class="flex ">
+                    <div class="flex flex-col bg-blue-200 p-4">
+                        <p>{{ $generation + 1}}</p>
+                        @foreach ($group->members as $member)
+                                <p>{{ $member->firstname }} {{ $member->lastname }}</p>                        
+                        @endforeach
+                    </div>
 
                 </div>
 
@@ -53,7 +55,10 @@
     @endif    
         
     @if(Auth::user()->id == $team->user_id || Auth::user()->admin)
-        <a href="{{ route('team.members.create', ['team' => $team, 'members' => $members]) }}" class="text-white bg-indigo-500 px-3 py-1 rounded hover:bg-indigo-400">Ajouter des membres</a>
+        <div class="flex flex-wrap">
+            <a href="{{ route('team.groupForm', ['team' => $team]) }}" class="text-white bg-indigo-500 px-3 py-1 mb-2 mr-2 rounded hover:bg-indigo-400">Générer les groupes</a>
+            <a href="{{ route('team.members.create', ['team' => $team, 'members' => $members]) }}" class="text-white bg-indigo-500 px-3 py-1 mb-2 rounded hover:bg-indigo-400">+Ajouter des membres</a>
+        </div>
     @endif
 
     @include('layouts.membersComponent')

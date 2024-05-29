@@ -112,6 +112,9 @@
 
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
+                                    @if(Auth::user()->admin == 1)
+                                        <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ffff00"><path d="M19.2 17L21 7L14.7 10L12 7L9.3 10L3 7L4.8 17H19.2Z" stroke="#ffff00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                    @endif
                                     <a href="" class=" text-white text-2xl font-semibold ">{{ Auth::user()->username }}</a>
                                 </button>
                             @endauth

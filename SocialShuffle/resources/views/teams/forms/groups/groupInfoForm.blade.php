@@ -27,17 +27,13 @@
                 @enderror
             </div>
 
-            @if (isset($team))
-                <div class=" self-end mb-5">
-                    <input type="submit" value="Modifier" class="text-white bg-indigo-500 px-3 py-1 rounded">
-                </div>
-            @else
-                <div class=" self-end mb-5">
-                    <input type="submit" value="Créer les groupes" class="text-white bg-indigo-500 px-3 py-1 rounded">
-                </div>
-            @endif
-            
+            @error('other')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
 
+            <div class=" self-end mb-5">
+                <input type="submit" value="Créer les groupes" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+            </div>
         </form>
     </div>
 @endsection

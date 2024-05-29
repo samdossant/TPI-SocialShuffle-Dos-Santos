@@ -130,12 +130,26 @@ public function store(TeamRequest $request)
     public function generateGroups(CreateGroupsRequest $request, Team $team)
     {
         $data = $request->validated();
-        
+
+        // Check that members exist in the team
+        if(!$team->members()->exists()){
+            return redirect()->back()->withErrors(['other' => 'Aucun membre dans cette équipe.']);
+        }
+
         $members = $team->members;
         $totalGenerations = $data['nbActivities'];  // Number of generations
         $membersPerGroup = $data['nbMemberPerGroup'];  // Size of the group (numbre of members)
         $totalMembers = count($members);
+
+        $notCompleteGroupeSize = null;
         $notComplete = false;
+
+        // Check that the specified group size isn't higher than the total number of members
+        if($membersPerGroup > $totalMembers)
+        {
+            return redirect()->back()->withErrors(['other' => 'La taille des groupes spécifiée est plus grande que le nombre total de membres'])
+                ->withInput($request->input);
+        }
         
         $membersId = $members->pluck('id')->toArray();
         
@@ -167,17 +181,18 @@ public function store(TeamRequest $request)
                     $group = [];
                 }
             }
-            
+
             // If the data doesn't allow to store the inputed number of members for the last groups, then store the uncomplete group in the generation.
             if($totalMembers % $membersPerGroup != 0){
                 $generationGroups[] = $group;
+                $notCompleteGroupeSize = $totalMembers % $membersPerGroup;
                 $notComplete = true;
             }
             
             // Store the generation
             $previousAssignments[] = $generationGroups;
         }
-        
+
         // Create groups in database and associate the members
         foreach($previousAssignments as $generationIndex => $generationGroup){
             
@@ -205,5 +220,5 @@ public function store(TeamRequest $request)
         ]);
         
         return response()->json($previousAssignments);
-    }    
+    }
 }
