@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use App\Models\Group;
+use App\Models\Member;
+use Illuminate\Http\Request;
 use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateGroupsRequest;
-use App\Models\Member;
 
 class TeamController extends Controller
 {
@@ -101,6 +102,10 @@ public function store(TeamRequest $request)
      */
     public function update(TeamRequest $request, Team $team)
     {
+        if($request->user()->cannot('update', $team)){
+            return abort(403);
+        }
+
         $validatedName = $request->validated();
 
         // Update with mass assignement
@@ -112,8 +117,11 @@ public function store(TeamRequest $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Team $team)
+    public function destroy(Request $request, Team $team)
     {
+        if($request->user()->cannot('delete', $team)){
+            return abort(403);
+        }
         $team->delete();
         return redirect()->route('team.index');
     }
