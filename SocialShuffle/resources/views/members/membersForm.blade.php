@@ -6,10 +6,10 @@
 
     <h2 class="text-2xl font-semibold mb-5">{{ isset($member) ? 'Modifier le membre' : 'Ajouter les membres' }}</h2>
 
-    <div class="flex justify-center w-full">
+    <div class="flex flex-col justify-center w-full">
 
-        <form action="{{ isset($member) ? route('team.members.update', ['team' => $team, 'member' => $member]) : route('team.members.store', ['team' => $team]) }}" method="post" 
-            class="flex flex-col w-full max-w-sm space-y-5">
+        <form action="{{ isset($member) ? route('team.members.update', ['team' => $team, 'member' => $member]) : route('team.members.store', ['team' => $team]) }}" method="post" enctype="multipart/form-data"
+            class="flex flex-col w-full max-w-sm space-y-5 mb-5">
             @csrf
 
             @isset($member)
@@ -41,13 +41,16 @@
                 @enderror
             </div>
             <div>
-                <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Numéro de téléphone" 
-                    value="{{ $member->phoneNumber ?? old('phoneNumber') }}"
+                <input type="text" name="phone_number" id="phone_number" placeholder="Numéro de téléphone" 
+                    value="{{ $member->phone_number ?? old('phone_number') }}"
                     class="border shadow rounded w-full px-2 py-1 focus:border-indigo-500 border-solid">
                 @error('phoneNumber')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </div>
+
+
+
             <div class="flex justify-between">
                 @if (isset($member))
                     <input type="submit" value="Modifier le membre" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
@@ -58,8 +61,34 @@
                     </a>
                 @endif
             </div>
-                
+
         </form>
+
+        <form action="{{ route('team.importCSV', ['team' => $team]) }}" method="POST" class="flex flex-col w-full max-w-sm space-y-5 mb-5" enctype="multipart/form-data">
+            @csrf
+            <div>
+                <a href="" class="text-indigo-500 underline">Téléchager un exemple de fichier CSV</a>
+                <p class="mb-2">Importer depuis un fichier CSV</p>
+                {{-- <label for="importCSV" 
+                    class="block w-full mr-4 py-2 px-4 rounded-md border-0 text-sm font-semibold bg-indigo-500 text-white hover:bg-indigo-400"
+                    >
+                    Sélectionner un fichier CSV
+                </label> --}}
+                <input type="file" id="importCSV" name="importCSV" accept=".csv" class=" ">
+                @error('importCSV')
+                    <p class="text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+            <div>
+                <input type="submit" value="Soumettre le fichier" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+            </div>
+            <div>
+                @error('ErrorInCSV')
+                    <p class="text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+        </form>
+
 
         @isset($member)
             <form action="{{ route('team.members.destroy', ['team' => $team, 'member' => $member]) }}" method="POST" 

@@ -24,7 +24,7 @@ class MemberFactory extends Factory
             'firstname' => fake()->firstName(),
             'lastname' => fake()->lastName(),
             'email' => fake()->email(),
-            'phoneNumber' => fake()->phoneNumber(),
+            'phone_number' => fake()->phoneNumber(),
 
             // Assign random team to the member
             'team_id' => fake()->randomElement($teams),

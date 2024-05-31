@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateGroupsRequest;
+use App\Http\Requests\MemberRequest;
+use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TeamController extends Controller
 {
@@ -49,28 +52,103 @@ class TeamController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-public function store(TeamRequest $request)
-{
-    // Validate request
-    $validatedName = $request->validated();
+    public function store(TeamRequest $request)
+    {
+        // Validate request
+        $validatedName = $request->validated();
 
-    // Add the current authentified user to the validated data array.
-    $validatedName['user_id'] = Auth::user()->id;
+        // Add the current authentified user to the validated data array.
+        $validatedName['user_id'] = Auth::user()->id;
 
-    // Create a new team with mass assignement
-    $team = Team::create($validatedName);
+        // Create a new team with mass assignement
+        $team = Team::create($validatedName);
 
-    return redirect()->route('team.members.create', 
-    [
-        'team' => $team,
-    ]);
-}
+        return redirect()->route('team.members.create', 
+        [
+            'team' => $team,
+        ]);
+    }
+
+    public function importCSV(Request $request, Team $team){
+        $request->validate([
+            'importCSV' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('importCSV');
+        $handle = fopen($file->path(), 'r');
+
+        // Skip file header
+        fgetcsv($handle);
+
+        $chunksize = 25;
+        while(!feof($handle))
+        {
+            $chunkdata = [];
+
+            for($i = 0; $i<$chunksize; $i++)
+            {
+                $data = fgetcsv($handle);
+                if($data === false)
+                {
+                    break;
+                }
+                $chunkdata[] = $data; 
+            }
+
+            if(!$this->getchunkdata($team, $chunkdata)){
+                return redirect()->back()->withErrors([
+                    'ErrorInCSV' => 'Une erreur a été détectée dans le fichier CSV',
+                ]);
+            }
+        }
+        fclose($handle);
+
+        return redirect()->route('team.members.create', 
+        [
+            'team' => $team,
+            'members' => $team->members()->get(),
+        ]);
+    }
+
+    public function getchunkdata(Team $team, $chunkdata){
+        foreach($chunkdata as $column){
+
+            $validator = Validator::make([
+                'firstname' => $column[0],
+                'lastname' => $column[1],
+                'email' => $column[2],
+                'phone_number' => $column[3],
+            ],
+            [
+                'firstname' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'email' => 'required|email|max:320',
+                'phone_number' => 'required|string|min:9',
+            ]);
+
+            if($validator->fails()){
+                return false;
+            }
+
+            $member = new Member();
+
+            $member->firstname = $column[0];
+            $member->lastname = $column[1];
+            $member->email = $column[2];
+            $member->phone_number = $column[3];
+            $member->team_id = $team->id;
+            $member->save();
+
+        }
+        return true;
+    }
 
     /**
      * Display the specified resource.
      */
     public function show(Team $team)
     {
+        $qrcode = QrCode::size(100)->generate(route('team.show', ['team' => $team]));
         // Checks that groups exist in the team
         if($team->groups()->exists()){
 
@@ -79,6 +157,7 @@ public function store(TeamRequest $request)
                 'team' => $team,
                 'groups' => $team->groups()->orderBy('generation')->get(),
                 'members' => $team->members()->get(),
+                'qrcode' => $qrcode,
             ]);
         }
 
@@ -86,6 +165,15 @@ public function store(TeamRequest $request)
         [
             'team' => $team,
             'members' => $team->members()->get(),
+            'qrcode' => $qrcode,
+        ]);
+    }
+
+    public function showActivity(Team $team, $generationNumber){
+        return view('teams.showActivity', 
+        [
+            'team' => $team,
+            'groups' => $team->groups()->where('generation', $generationNumber),
         ]);
     }
 
@@ -237,8 +325,8 @@ public function store(TeamRequest $request)
         }
 
         $team->update([
-            'nbActivities' => $totalGenerations,
-            'nbMemberPerGroup' => $membersPerGroup,
+            'nb_activities' => $totalGenerations,
+            'group_size' => $membersPerGroup,
         ]);
         
         return redirect()->route('team.show', ['team' => $team]);

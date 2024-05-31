@@ -12,11 +12,17 @@ Route::get('/', function () {
 
 // Team algorithm (Additional routes to a resource controller must be defined before calling the resource route)
 
+Route::post('import-csv/{team}', [TeamController::class, 'importCSV'])
+    ->name('team.importCSV');
+
 Route::get('groupForm/{team}', [TeamController::class, 'groupForm'])
     ->name('team.groupForm');
 
 Route::post('createGroups/{team}', [TeamController::class, 'generateGroups'])
     ->name('team.createGroups');
+
+Route::get('Activity/{team}', [TeamController::class, 'showActivity'])
+    ->name('team.showActivity');
 
 // resources
 Route::resource('team', TeamController::class);

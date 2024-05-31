@@ -36,7 +36,7 @@ class MemberController extends Controller
 
         return view('members.createMembers', [
             'team' => $team,
-        ]);        
+        ]);
     }
 
     /**
