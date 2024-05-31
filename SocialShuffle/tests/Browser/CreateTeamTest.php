@@ -4,13 +4,12 @@ namespace Tests\Browser;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
 class CreateTeamTest extends DuskTestCase
 {
-    use DatabaseTruncation;
+    use DatabaseMigrations;
 
     /**
      * Test that creating a full test works
