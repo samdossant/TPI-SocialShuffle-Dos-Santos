@@ -13,5 +13,3 @@ Installer le dossier node_modules avec `npm -i` afin de pouvoir utiliser Tailwin
 
 ## Configuration du projet
 ### Fichier `.env`
-
-
