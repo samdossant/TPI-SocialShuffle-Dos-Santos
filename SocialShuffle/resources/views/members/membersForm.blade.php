@@ -55,8 +55,8 @@
                 @if (isset($member))
                     <input type="submit" value="Modifier le membre" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
                 @else
-                    <input type="submit" value="+ Ajouter un membre" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
-                    <a href="{{ route('team.groupForm', ['team' => $team]) }}" class="flex gap-2 text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+                    <input type="submit" value="+ Ajouter un membre" dusk="add-member" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+                    <a href="{{ route('team.groupForm', ['team' => $team]) }}" dusk="next" class="flex gap-2 text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
                         Suivant <svg width="24px" height="24px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ffffff"><path d="M3 12L21 12M21 12L12.5 3.5M21 12L12.5 20.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
                     </a>
                 @endif

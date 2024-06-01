@@ -25,7 +25,7 @@ class MemberRequest extends FormRequest
             'firstname' => 'required|string',
             'lastname'  => 'required|string',
             'email'     => 'required|email',
-            'phoneNumber' => 'required|min:9|numeric',
+            'phone_number' => 'required|min:9|numeric',
         ];
     }
 }

@@ -16,7 +16,7 @@ class Member extends Model
         'firstname',
         'lastname',
         'email',
-        'phoneNumber',
+        'phone_number',
     ];
 
     public function team(): BelongsTo

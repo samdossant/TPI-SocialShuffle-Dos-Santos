@@ -44,7 +44,7 @@
                 </div>
             @else
                 <div class=" self-end mb-5">
-                    <input type="submit" value="Créer les groupes" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
+                    <input type="submit" value="Créer les groupes" dusk="create-groups" class="text-white bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded">
                 </div>
             @endif
         </form>

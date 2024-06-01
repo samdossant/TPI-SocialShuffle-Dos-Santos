@@ -20,7 +20,7 @@
                     class="border shadow rounded w-full p-2">
             </div>
             <div class="self-end text-white bg-indigo-500 rounded p-2">
-                <input type="submit" value="Se connecter">
+                <input type="submit" value="Se connecter" dusk="login-button">
             </div>
         </form>
     </div>

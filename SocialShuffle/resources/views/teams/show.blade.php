@@ -62,7 +62,7 @@
         @endif
     @endif
         
-    @if(Auth::check() && Auth::user()->id == $team->user_id || Auth::user()->admin)
+    @if(Auth::check() && (Auth::user()->id == $team->user_id || Auth::user()->admin))
         <h2 class="my-5 text-4xl font-semibold">Gestion des membres</h2>
         <div class="flex flex-wrap ">
             <a href="{{ route('team.groupForm', ['team' => $team]) }}" class="text-white bg-indigo-500 px-3 py-1 mb-2 mr-2 rounded hover:bg-indigo-400">Générer les groupes</a>

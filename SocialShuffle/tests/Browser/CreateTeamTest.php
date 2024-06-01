@@ -14,7 +14,7 @@ class CreateTeamTest extends DuskTestCase
     /**
      * Test that creating a full test works
      */
-    public function create_team_test(): void
+    public function testCreateTeam(): void
     {
         // Arrange
         $user = User::factory()->create([
@@ -27,35 +27,42 @@ class CreateTeamTest extends DuskTestCase
         // Act
         $this->browse(function (Browser $browser) use ($user) {
             $browser->visit('/')
-                    ->clickLink('Se Connecter')
+
+                    // Login
+                    ->clickLink('Se connecter')
                     ->type('email', $user->username)
                     ->type('password', '0000')
+                    ->click('@login-button')
+
+                    // Team name
                     ->clickLink('+ Nouvelle équipe')
                     ->type('name', 'duskTeam')
-                    ->clickLink('Suivant')
+                    ->click('@next-button')
 
+                    // Add members
                     ->type('firstname', 'm1')
                     ->type('lastname', 'm1')
                     ->type('email', 'm1@a.a')
-                    ->type('phoneNumber', '9999999999')
-
-                    ->clickLink('+ Ajouter un membre')
-
+                    ->type('phone_number', '9999999999')
+                    ->click('@add-member')
+                    
                     ->type('firstname', 'm2')
                     ->type('lastname', 'm2')
                     ->type('email', 'm2@a.a')
-                    ->type('phoneNumber', '9999999999')
-
-                    ->clickLink('Suivant')
-
+                    ->type('phone_number', '9999999999')
+                    ->click('@add-member')
+                    
+                    ->click('@next')
+                    
                     ->type('nbMemberPerGroup', 1)
                     ->type('nbActivities', 1)
 
-                    ->clickLink('Créer les groupes')
+                    ->click('@create-groups')
 
-                    ->screenshot('groups')
+                    ->screenshot('finish')
+
                     // Assert
-                    ->assertPathIs('/team');
+                    ->assertPathIs('/team/1');
         });
     }
 }
