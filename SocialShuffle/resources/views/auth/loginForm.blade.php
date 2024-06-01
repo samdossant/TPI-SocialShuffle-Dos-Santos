@@ -13,11 +13,18 @@
             
             <div>
                 <input type="text" name="email" id="email" placeholder="Email ou Nom d'utilisateur"
+                    value="{{ old('email') }}"
                     class="border shadow rounded w-full p-2">
+                @error('email')
+                    <p class="text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div>
                 <input type="password" name="password" id="password" placeholder="Mot de passe"
                     class="border shadow rounded w-full p-2">
+                @error('password')
+                    <p class="text-red-500">{{ $message }}</p>
+                @enderror
             </div>
             <div class="self-end text-white bg-indigo-500 rounded p-2">
                 <input type="submit" value="Se connecter" dusk="login-button">

@@ -7,15 +7,13 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class LoginTest extends DuskTestCase
+class WrongLoginTest extends DuskTestCase
 {
-
     use DatabaseMigrations;
-
     /**
      * A Dusk test example.
      */
-    public function testLogin(): void
+    public function testExample(): void
     {
         // Arrange
         $user = User::factory()->create([
@@ -30,8 +28,8 @@ class LoginTest extends DuskTestCase
 
                     // Login
                     ->clickLink('Se connecter')
-                    ->type('email', $user->username)
-                    ->type('password', '0000')
+                    ->type('email', 'blabla')
+                    ->type('password', 'Mauvais mot de passe')
                     ->click('@login-button')
                     
                     ->assertSee('jDoe');

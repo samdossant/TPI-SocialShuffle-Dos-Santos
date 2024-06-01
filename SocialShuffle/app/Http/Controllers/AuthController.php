@@ -15,7 +15,13 @@ class AuthController extends Controller
 
     // Check the credentials and regenerate a session where the user is logged
     public function applyLogin(Request $request){
-        $login = $request->input('email');
+
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $login = $validated['email'];
 
         // Query the database to get either the usename that the user typed, the email or both.
         $user = User::where('email', $login)
