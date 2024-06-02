@@ -16,7 +16,7 @@ return new class extends Migration
 
             // Foreign Keys
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
-            $table->foreignID('group_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('group_id')->constrained()->cascadeOnDelete();
         });
     }
 

@@ -67,14 +67,14 @@
         <form action="{{ route('team.importCSV', ['team' => $team]) }}" method="POST" class="flex flex-col w-full max-w-sm space-y-5 mb-5" enctype="multipart/form-data">
             @csrf
             <div>
-                <a href="" class="text-indigo-500 underline">Téléchager un exemple de fichier CSV</a>
+                <a href="{{ route('team.csvDownload') }}" class="text-indigo-500 underline">Téléchager un exemple de fichier CSV</a>
                 <p class="mb-2">Importer depuis un fichier CSV</p>
-                {{-- <label for="importCSV" 
+                <label for="importCSV" 
                     class="block w-full mr-4 py-2 px-4 rounded-md border-0 text-sm font-semibold bg-indigo-500 text-white hover:bg-indigo-400"
                     >
                     Sélectionner un fichier CSV
-                </label> --}}
-                <input type="file" id="importCSV" name="importCSV" accept=".csv" class=" ">
+                </label>
+                <input type="file" id="importCSV" name="importCSV" accept=".csv" class=" hidden">
                 @error('importCSV')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror

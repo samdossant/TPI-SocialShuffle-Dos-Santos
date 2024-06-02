@@ -24,6 +24,9 @@ Route::post('createGroups/{team}', [TeamController::class, 'generateGroups'])
 Route::get('Activity/{team}', [TeamController::class, 'showActivity'])
     ->name('team.showActivity');
 
+Route::get('csv-example',[TeamController::class, 'csvDownload'])
+    ->name('team.csvDownload');
+
 // resources
 Route::resource('team', TeamController::class);
 Route::resource('team.members', MemberController::class);

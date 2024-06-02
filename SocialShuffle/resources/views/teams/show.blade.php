@@ -24,7 +24,7 @@
         @endcan
     </div>
 
-    {{ $qrcode }}
+{{ $qrcode }}
 
     @if(isset($groups))
 

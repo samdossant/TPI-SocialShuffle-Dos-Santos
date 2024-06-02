@@ -10,6 +10,7 @@ use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateGroupsRequest;
 use App\Http\Requests\MemberRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -148,7 +149,8 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        $qrCode = QrCode::size(100)->generate(route('team.show', ['team' => $team]));
+$qrCode = QrCode::size(100)
+    ->generate(route('team.show', ['team' => $team]));
         // Checks that groups exist in the team
         if($team->groups()->exists()){
 
@@ -214,6 +216,10 @@ class TeamController extends Controller
         return redirect()->route('team.index');
     }
 
+    public function csvDownload(){
+        return Storage::disk('public')->download('CSV-Exemple.csv');
+    }
+
     //---- Groups management ----
 
     /**
@@ -268,7 +274,7 @@ class TeamController extends Controller
         // Contains all the generations
         $previousAssignments = [];
         
-        // Cycle through each generation
+        // Iterate through each generation
         for($i = 0; $i < $totalGenerations; $i++)
         {
             $group = []; // Contains one group at a time
@@ -294,7 +300,9 @@ class TeamController extends Controller
                 }
             }
 
-            // If the data doesn't allow to store the inputed number of members for the last groups, then store the uncomplete group in the generation.
+            // If the data doesn't allow to store the inputed number 
+            // of members for the last groups, then store the incomplete 
+            //group in the generation.
             if($totalMembers % $membersPerGroup != 0){
                 $generationGroups[] = $group;
             }
@@ -305,8 +313,6 @@ class TeamController extends Controller
 
         // Create groups in database and associate the members
         foreach($previousAssignments as $generationIndex => $generationGroup){
-            
-            // $i = 0;
             
             foreach($generationGroup as $groupMembers){
                 $group = Group::create([
