@@ -46,7 +46,7 @@ class TeamController extends Controller
         if(!Auth::check()){
             return abort(401);
         }
-        return view('teams.forms.name.nameForm');
+        return view('teams.name.nameForm');
     }
 
     /**
@@ -80,22 +80,22 @@ class TeamController extends Controller
         // Skip file header
         fgetcsv($handle);
 
-        $chunksize = 25;
+        $chunkSize = 25;
         while(!feof($handle))
         {
-            $chunkdata = [];
+            $chunkData = [];
 
-            for($i = 0; $i<$chunksize; $i++)
+            for($i = 0; $i < $chunkSize; $i++)
             {
                 $data = fgetcsv($handle);
                 if($data === false)
                 {
                     break;
                 }
-                $chunkdata[] = $data; 
+                $chunkData[] = $data; 
             }
 
-            if(!$this->getchunkdata($team, $chunkdata)){
+            if(!$this->getChunkData($team, $chunkData)){
                 return redirect()->back()->withErrors([
                     'ErrorInCSV' => 'Une erreur a été détectée dans le fichier CSV',
                 ]);
@@ -110,8 +110,8 @@ class TeamController extends Controller
         ]);
     }
 
-    public function getchunkdata(Team $team, $chunkdata){
-        foreach($chunkdata as $column){
+    public function getChunkData(Team $team, $chunkData){
+        foreach($chunkData as $column){
 
             $validator = Validator::make([
                 'firstname' => $column[0],
@@ -148,7 +148,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        $qrcode = QrCode::size(100)->generate(route('team.show', ['team' => $team]));
+        $qrCode = QrCode::size(100)->generate(route('team.show', ['team' => $team]));
         // Checks that groups exist in the team
         if($team->groups()->exists()){
 
@@ -157,7 +157,7 @@ class TeamController extends Controller
                 'team' => $team,
                 'groups' => $team->groups()->orderBy('generation')->get(),
                 'members' => $team->members()->get(),
-                'qrcode' => $qrcode,
+                'qrcode' => $qrCode,
             ]);
         }
 
@@ -165,7 +165,7 @@ class TeamController extends Controller
         [
             'team' => $team,
             'members' => $team->members()->get(),
-            'qrcode' => $qrcode,
+            'qrcode' => $qrCode,
         ]);
     }
 
@@ -182,7 +182,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        return view('teams.forms.name.editName', ['team' => $team]);
+        return view('teams.name.editName', ['team' => $team]);
     }
 
     /**
@@ -220,7 +220,7 @@ class TeamController extends Controller
      * Show the form to enter the data related to the group generation
      */
     public function groupForm(Team $team){
-        return view('teams.forms.groups.createGroups', ['team' => $team]);
+        return view('groups.createGroups', ['team' => $team]);
     }
 
     public function generateGroups(CreateGroupsRequest $request, Team $team)

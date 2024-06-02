@@ -1,1 +1,0 @@
-@include('teams.forms.groups.groupInfoForm', ['team' => $team])
