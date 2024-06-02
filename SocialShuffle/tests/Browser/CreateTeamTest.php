@@ -40,14 +40,14 @@ public function testCreateTeam(): void
                 ->click('@next-button')
 
                 // Add members
-                ->type('firstname', 'm1')
-                ->type('lastname', 'm1')
+                ->type('firstname', 'John')
+                ->type('lastname', 'Doe')
                 ->type('email', 'm1@a.a')
                 ->type('phone_number', '9999999999')
                 ->click('@add-member')
                 
-                ->type('firstname', 'm2')
-                ->type('lastname', 'm2')
+                ->type('firstname', 'Jane')
+                ->type('lastname', 'Doe')
                 ->type('email', 'm2@a.a')
                 ->type('phone_number', '9999999999')
                 ->click('@add-member')
