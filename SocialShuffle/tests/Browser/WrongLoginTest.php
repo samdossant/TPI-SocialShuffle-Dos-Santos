@@ -30,9 +30,11 @@ class WrongLoginTest extends DuskTestCase
                     ->clickLink('Se connecter')
                     ->type('email', 'blabla')
                     ->type('password', 'Mauvais mot de passe')
-                    ->click('@login-button');
+                    ->click('@login-button')
                     
-                    // ->assertSee('jDoe');
+                    // Assert that the login form is still visible.
+                    ->assertVisible('input[name=email]')
+                    ->assertVisible('input[name=password]');
         });
     }
 }
