@@ -15,7 +15,7 @@ class CreateWrongMemberTest extends DuskTestCase
     /**
      * A Dusk test example.
      */
-    public function tesCreateWrongMember(): void
+    public function testCreateWrongMember(): void
     {
         // Arrange
         $user = User::factory()->create([
