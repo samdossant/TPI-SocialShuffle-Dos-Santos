@@ -17,6 +17,7 @@ jobs:
       APP_URL: "http://127.0.0.1:8000"
       APP_ENV: local
       APP_DEBUG: true
+      APP_LOCALE: fr
       DB_CONNECTION: mysql
       DB_HOST: 127.0.0.1
       DB_PORT: 3306
