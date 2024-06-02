@@ -44,7 +44,7 @@
                 <input type="text" name="phone_number" id="phone_number" placeholder="Numéro de téléphone" 
                     value="{{ $member->phone_number ?? old('phone_number') }}"
                     class="border shadow rounded w-full px-2 py-1 focus:border-indigo-500 border-solid">
-                @error('phoneNumber')
+                @error('phone_number')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </div>

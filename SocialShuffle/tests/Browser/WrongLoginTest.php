@@ -28,7 +28,7 @@ class WrongLoginTest extends DuskTestCase
 
                     // Login
                     ->clickLink('Se connecter')
-                    ->type('email', 'blabla')
+                    ->type('email', 'Mauvaise adresse')
                     ->type('password', 'Mauvais mot de passe')
                     ->click('@login-button')
                     
