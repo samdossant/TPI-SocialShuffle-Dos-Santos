@@ -25,7 +25,7 @@
                 @endif
                 <div class="mb-4">
                     <h2 class="text-xl font-bold my-4">Activité {{ $group->generation + 1 }}</h2></class=>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @endif
             @php
                 $currentGeneration = $group->generation;
