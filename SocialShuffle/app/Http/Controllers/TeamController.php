@@ -149,8 +149,8 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-$qrCode = QrCode::size(100)
-    ->generate(route('team.show', ['team' => $team]));
+        $qrCode = QrCode::size(100)
+            ->generate(route('team.show', ['team' => $team]));
         // Checks that groups exist in the team
         if($team->groups()->exists()){
 
@@ -168,14 +168,6 @@ $qrCode = QrCode::size(100)
             'team' => $team,
             'members' => $team->members()->get(),
             'qrcode' => $qrCode,
-        ]);
-    }
-
-    public function showActivity(Team $team, $generationNumber){
-        return view('teams.showActivity', 
-        [
-            'team' => $team,
-            'groups' => $team->groups()->where('generation', $generationNumber),
         ]);
     }
 
@@ -337,4 +329,26 @@ $qrCode = QrCode::size(100)
         
         return redirect()->route('team.show', ['team' => $team]);
     }
+
+    /**
+     * Return the view that shows a specific generation
+     */
+    public function showActivity(Team $team, $generation){
+        $qrCode = QrCode::size(100)
+            ->generate(route('team.showActivity', ['team' => $team, 'generation' => $generation]));
+        return view('teams.showActivity', 
+            [
+                'team' => $team,
+                'groups' => $team->groups()->where('generation', $generation)->get(),
+                'generation' => $generation,
+                'qrCode' => $qrCode,
+            ]);
+    }
+
+    public function deleteGroup(Group $group){
+        $group->delete();
+        return redirect()->back();
+    }
+
+
 }

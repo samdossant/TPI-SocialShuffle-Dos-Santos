@@ -52,7 +52,5 @@
         @empty
             Aucune équipe n'a encore été créée
         @endforelse
-    </div>
-
-
+        </div>
 @endsection

@@ -96,7 +96,6 @@
                             <div class="flex space-x-4">
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                                 <a href="{{ route('team.index') }}" class="{{ Request::route()->getName() == 'team.index' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Liste des équipes</a>
-                                <a href="{{ route('about') }}" class="{{ Request::route()->getName() == 'about' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} rounded-md px-3 py-2 text-sm font-medium">À propos</a>
                                 @auth
                                     <a href="{{ route('team.create') }}" class=" bg-indigo-500 text-white hover:bg-indigo-400 hover:text-white rounded-md px-3 py-2 text-sm font-medium">+ Nouvelle équipe</a>
                                 @endauth
@@ -156,7 +155,6 @@
                         <a href="{{ route('team.create') }}" class="bg-indigo-500 text-white block rounded-md px-3 py-2 mb-6 text-base font-medium" aria-current="page">+ Nouvelle équipe</a>
                     @endauth
                     <a href="{{ route('team.index') }}" class="{{ Request::route()->getName() == 'team.index' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Liste des équipes</a>
-                    <a href="{{ route('about') }}" class="{{ Request::route()->getName() == 'about' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} hover:text-white block rounded-md px-3 py-2 text-base font-medium">À propos</a>
                 </div>
             </div>
         </nav>

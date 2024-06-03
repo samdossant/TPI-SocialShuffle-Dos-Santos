@@ -27,6 +27,13 @@ Route::get('Activity/{team}', [TeamController::class, 'showActivity'])
 Route::get('csv-example',[TeamController::class, 'csvDownload'])
     ->name('team.csvDownload');
 
+Route::get('showActivity/{team}/{generation}', [TeamController::class, 'showActivity'])
+    ->name('team.showActivity');
+
+Route::delete('group/destroy/{group}',[TeamController::class, 'deleteGroup'])
+    ->name('team.group.destroy');
+    
+
 // resources
 Route::resource('team', TeamController::class);
 Route::resource('team.members', MemberController::class);
