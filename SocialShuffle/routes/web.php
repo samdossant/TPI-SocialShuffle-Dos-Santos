@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
@@ -12,26 +13,28 @@ Route::get('/', function () {
 
 // Team algorithm (Additional routes to a resource controller must be defined before calling the resource route)
 
+// CSV import
 Route::post('import-csv/{team}', [TeamController::class, 'importCSV'])
     ->name('team.importCSV');
 
+// Create groups
 Route::get('groupForm/{team}', [TeamController::class, 'groupForm'])
     ->name('team.groupForm');
 
 Route::post('createGroups/{team}', [TeamController::class, 'generateGroups'])
     ->name('team.createGroups');
 
-Route::get('Activity/{team}', [TeamController::class, 'showActivity'])
-    ->name('team.showActivity');
-
-Route::get('csv-example',[TeamController::class, 'csvDownload'])
-    ->name('team.csvDownload');
-
+// Show a specific activity
 Route::get('showActivity/{team}/{generation}', [TeamController::class, 'showActivity'])
     ->name('team.showActivity');
 
-Route::delete('group/destroy/{group}',[TeamController::class, 'deleteGroup'])
-    ->name('team.group.destroy');
+// Download CSV example
+Route::get('csv-example',[TeamController::class, 'csvDownload'])
+    ->name('team.csvDownload');
+
+// Delete a pecific group
+Route::delete('group/destroy/{group}',[GroupController::class, 'deleteGroup'])
+    ->name('group.destroy');
     
 
 // resources

@@ -344,11 +344,4 @@ class TeamController extends Controller
                 'qrCode' => $qrCode,
             ]);
     }
-
-    public function deleteGroup(Group $group){
-        $group->delete();
-        return redirect()->back();
-    }
-
-
 }

@@ -5,18 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MemberRequest;
 use App\Models\Member;
 use App\Models\Team;
-use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -56,14 +47,6 @@ class MemberController extends Controller
             'team' => $team,
             'members' => $team->members()->get(),
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Team $team, Member $member)
-    {
-
     }
 
     /**

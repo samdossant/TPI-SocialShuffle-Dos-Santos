@@ -42,7 +42,7 @@
                 </div>
                 @can('delete', $team)                    
                     <div>
-                        <form action="{{ route('team.group.destroy', ['group' => $group]) }}" method="POST" 
+                        <form action="{{ route('group.destroy', ['group' => $group]) }}" method="POST" 
                             class="self-end border border-black rounded">
                             @csrf
                             @method('DELETE')
