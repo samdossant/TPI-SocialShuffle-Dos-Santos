@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MemberRequest;
-use App\Models\Member;
 use App\Models\Team;
+use App\Models\Member;
+use App\Policies\TeamPolicy;
+use GuzzleHttp\Psr7\Request;
+use App\Http\Requests\MemberRequest;
+use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
 {
@@ -54,7 +57,10 @@ class MemberController extends Controller
      */
     public function edit(Team $team, Member $member)
     {
-        
+        if(!Auth::check() || Auth::user()->id != $team->user_id || !Auth::user()->admin){
+            return abort(403);
+        }
+
         return view('members.editMembers', [
             'team' => $team,
             'member' => $member,
@@ -67,6 +73,10 @@ class MemberController extends Controller
      */
     public function update(MemberRequest $request, Team $team, Member $member)
     {
+        if($request->user()->cannot('update', $team)){
+            abort(403);
+        }
+
         $validatedMember = $request->validated();
 
         $member->update($validatedMember);

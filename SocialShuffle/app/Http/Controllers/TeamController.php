@@ -176,6 +176,10 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
+        if(!Auth::check() || Auth::user()->id != $team->user_id || !Auth::user()->admin){
+            return abort(403);
+        }
+        
         return view('teams.name.editName', ['team' => $team]);
     }
 
