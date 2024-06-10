@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use App\Models\Member;
-use App\Policies\TeamPolicy;
-use GuzzleHttp\Psr7\Request;
 use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\Auth;
 

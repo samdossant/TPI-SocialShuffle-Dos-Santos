@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TeamRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateGroupsRequest;
-use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
